@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { backendUrl, currency } from "../App";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -23,6 +23,12 @@ const List = () => {
 
   const removeProduct = async (_id) => {
     try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        toast.error("Authorization token missing! Please login again.");
+        return;
+      }
       const response = await axios.post(
         backendUrl + "/api/product/remove",
         { _id },
